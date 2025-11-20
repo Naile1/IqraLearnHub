@@ -1,24 +1,25 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      {/* Onboarding */}
+      <Stack.Screen name="(onboarding)" />
+
+      {/* Main Tabs */}
+      <Stack.Screen name="(tabs)" />
+
+      {/* Feature Screens */}
+      <Stack.Screen name="ask-iqra/chat" />
+      <Stack.Screen name="islamic/quran-details" />
+      <Stack.Screen name="islamic/akhlaq-coach" />
+      <Stack.Screen name="steam/lesson" />
+
+      {/* Parent dashboard (no login) */}
+      <Stack.Screen name="parent/dashboard" />
+
+      {/* Settings */}
+      <Stack.Screen name="settings/age-control" />
+    </Stack>
   );
 }
