@@ -1,16 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View, Image } from "react-native";
-import { Link } from "expo-router";
+import { View } from "react-native";
+import Logo from "../components/Logo";
 import "../global.css";
 
 export default function App() {
   return (
-    <View className="flex-1  relative bg-[#FCF7FA]">
+    <View className="flex-1  relative bg-[#F0F7FF]">
     
       <View className="absolute top-20 w-full items-center justify-center py-40 ">
-         <Text className="text-lg font-bold mb-4 text-[#8183BD]">
+         {/* <Text className="text-lg font-bold mb-4 text-[#8183BD]">
           LET'S TAKE CONTROL OF YOUR LIFE
-          </Text>
+          </Text> */}
+          <Logo />
+          {/* <AgeSelectionScreen/> */}
         </View>
 
         
