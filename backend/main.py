@@ -11,6 +11,9 @@ client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 
 app = FastAPI()
+@app.get("/")
+def read_root():
+    return {"message": "IqraLearnHub backend is live!"}
 
 class AskRequest(BaseModel):
     age: int
@@ -72,3 +75,4 @@ Return JSON like this:
 def ask(req: AskRequest):
     result = generate_response(req.age, req.subject, req.question)
     return result
+
