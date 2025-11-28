@@ -1,123 +1,194 @@
-// AgeSelection.jsx
 import React, { useState } from "react";
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Image,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function AgeSelection() {
   const router = useRouter();
-
-  const [age, setAge] = useState(null);
+  const [age, setAge] = useState("");
   const [subject, setSubject] = useState(null);
 
-  const ages = [10, 11, 12, 13, 14, 15, 16];
-  const subjects = ["Islam", "Math", "Science", "English"];
+  const subjects = [
+    "Islamic Studies",
+    "Math",
+    "Qur’an Understanding",
+    "Science",
+    "Coding",
+    "Akhlaq & Manners",
+  ];
 
   const startLearning = () => {
-    if (!age || !subject) {
-      alert("Please select both age and subject.");
+    const numericAge = parseInt(age);
+    if (!numericAge || !subject) {
+      Alert.alert("Selection Required", "Please enter your age and select a subject.");
+      return;
+    }
+    if (numericAge < 3 || numericAge > 17) {
+      Alert.alert("Invalid Age", "Please enter an age between 3 and 17.");
       return;
     }
 
-    // Navigate to home-screen with params
     router.push({
       pathname: "/home-screen",
-      params: { age: age.toString(), subject },
+      params: {
+        age: numericAge,
+        subject,
+      },
     });
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Select Your Age</Text>
-      <View style={styles.optionsContainer}>
-        {ages.map((a) => (
-          <TouchableOpacity
-            key={a}
-            style={[styles.optionCard, age === a && styles.optionSelected]}
-            onPress={() => setAge(a)}
-          >
-            <Text style={[styles.optionText, age === a && styles.optionTextSelected]}>
-              {a} years
-            </Text>
-          </TouchableOpacity>
-        ))}
+      {/* Logo */}
+      <View style={styles.logoWrapper}>
+        <Image
+          source={require("../assets/images/IqraLearnHub_logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
       </View>
 
-      <Text style={[styles.title, { marginTop: 24 }]}>Select Subject</Text>
-      <View style={styles.optionsContainer}>
+      {/* Greeting */}
+      <View style={styles.greetingWrapper}>
+        <Text style={styles.greeting}>Assalamu Alaikum!</Text>
+        <Text style={styles.greetingSub}>Let's Begin Learning.</Text>
+      </View>
+
+      {/* Age Input */}
+      <Text style={styles.sectionTitle}>Enter Your Age</Text>
+      <TextInput
+        style={styles.ageInput}
+        placeholder="Type your age"
+        keyboardType="numeric"
+        value={age}
+        onChangeText={setAge}
+        maxLength={2}
+      />
+
+      {/* Subjects */}
+      <Text style={[styles.sectionTitle, { marginTop: 20 }]}>
+        I'm Interested In...
+      </Text>
+      <View style={styles.subjectWrapper}>
         {subjects.map((s) => (
           <TouchableOpacity
             key={s}
-            style={[styles.optionCard, subject === s && styles.optionSelected]}
             onPress={() => setSubject(s)}
+            style={[styles.subjectPill, subject === s && styles.subjectPillSelected]}
           >
-            <Text style={[styles.optionText, subject === s && styles.optionTextSelected]}>
+            <Text style={[styles.subjectText, subject === s && styles.subjectTextSelected]}>
               {s}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      <TouchableOpacity style={styles.startButton} onPress={startLearning}>
-        <Text style={styles.startButtonText}>Start Learning</Text>
+      {/* Start Button */}
+      <TouchableOpacity style={styles.startBtn} onPress={startLearning}>
+        <Text style={styles.startBtnText}>Start Learning</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
 
-// -------- Styles --------
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-    paddingTop: 40,
+    backgroundColor: "#F7F4EF",
+    padding: 20,
     paddingBottom: 60,
+    alignItems: "center",
   },
-  title: {
+  logoWrapper: {
+    marginBottom: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+  },
+  logo: {
+    width: 120,
+    height: 120,
+  },
+  greetingWrapper: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  greeting: {
     fontSize: 22,
-    fontWeight: "600",
+    fontWeight: "700",
     color: "#1E3A8A",
   },
-  optionsContainer: {
+  greetingSub: {
+    fontSize: 16,
+    marginTop: 4,
+    color: "#3B82F6",
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#1E3A8A",
+    alignSelf: "flex-start",
+    marginBottom: 10,
+  },
+  ageInput: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#3B82F6",
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: "#1E3A8A",
+  },
+  subjectWrapper: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 12,
     gap: 12,
+    marginTop: 10,
+    justifyContent: "start",
   },
-  optionCard: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+  subjectPill: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 25,
     borderWidth: 1,
-    borderColor: "#1E3A8A",
-    borderRadius: 16,
-    marginRight: 12,
-    marginBottom: 12,
+    borderColor: "#3B82F6",
+    marginBottom: 10,
   },
-  optionSelected: {
+  subjectPillSelected: {
     backgroundColor: "#1E3A8A",
+    borderColor: "#1E3A8A",
   },
-  optionText: {
+  subjectText: {
+    fontSize: 14,
     color: "#1E3A8A",
     fontWeight: "500",
   },
-  optionTextSelected: {
+  subjectTextSelected: {
     color: "#fff",
+    fontWeight: "600",
   },
-  startButton: {
-    marginTop: 40,
+  startBtn: {
     backgroundColor: "#1E3A8A",
+    marginTop: 40,
     paddingVertical: 16,
-    borderRadius: 16,
+    borderRadius: 12,
     alignItems: "center",
+    width: "100%",
   },
-  startButtonText: {
-    color: "#fff",
+  startBtnText: {
+    color: "white",
     fontSize: 18,
     fontWeight: "600",
   },
